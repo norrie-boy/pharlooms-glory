@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace PharloomsGlory;
@@ -10,7 +11,26 @@ public class Constants
     public const string PLUGIN_NAME = "Pharloom's Glory";
     public const string PLUGIN_VERSION = "0.1.0";
 
-    public static readonly string BASE_PLUGIN_PATH = $"\\\\?\\{Path.Combine(Paths.PluginPath, "PharloomsGlory")}";
+    private const string DLL_NAME = "PharloomsGlory.dll";
+
+    private static string basePluginPath = string.Empty;
+    public static string BASE_PLUGIN_PATH
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(basePluginPath))
+                return basePluginPath;
+            foreach (string dir in Directory.GetDirectories(Paths.PluginPath))
+            {
+                if (Directory.GetFiles(dir).Any(file => Path.GetFileName(file) == DLL_NAME))
+                {
+                    basePluginPath = $"\\\\?\\{Path.Combine(Paths.PluginPath, Path.GetFileName(dir))}";
+                    break;
+                }
+            }
+            return basePluginPath;
+        }
+    }
 
     public static readonly string TEXTURES_PATH = Path.Combine(BASE_PLUGIN_PATH, "Textures");
     public static readonly string SPRITE_OFFSETS_FILE_NAME = "spriteOffsets.txt";
