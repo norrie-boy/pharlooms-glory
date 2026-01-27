@@ -11,11 +11,6 @@ public class Plugin : BaseUnityPlugin
 {
     internal static Plugin instance;
 
-    /* DEBUG */
-    private bool showInspector = false;
-    private bool showSpriteDumper = false;
-    /* DEBUG */
-
     private void Awake()
     {
         instance = this;
