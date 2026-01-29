@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 
 namespace PharloomsGlory.Modifiers;
@@ -30,7 +31,8 @@ public class SceneModificationsParser
             return false;
         values[0] = values[0];
         values[1] = values[1];
-        if (float.TryParse(values[0], out float x) && float.TryParse(values[1], out float y))
+        if (float.TryParse(values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x) &&
+            float.TryParse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y))
         {
             result = new Vector2(x, y);
             return true;
@@ -50,7 +52,9 @@ public class SceneModificationsParser
             return false;
         values[0] = values[0];
         values[2] = values[2];
-        if (float.TryParse(values[0], out float x) && float.TryParse(values[1], out float y) && float.TryParse(values[2], out float z))
+        if (float.TryParse(values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x) &&
+            float.TryParse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y) &&
+            float.TryParse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z))
         {
             result = new Vector3(x, y, z);
             return true;
@@ -70,7 +74,10 @@ public class SceneModificationsParser
             return false;
         values[0] = values[0];
         values[3] = values[3];
-        if (float.TryParse(values[0], out float r) && float.TryParse(values[1], out float g) && float.TryParse(values[2], out float b) && float.TryParse(values[3], out float a))
+        if (float.TryParse(values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float r) &&
+            float.TryParse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float g) &&
+            float.TryParse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float b) &&
+            float.TryParse(values[3], NumberStyles.Float, CultureInfo.InvariantCulture, out float a))
         {
             result = new Color(r, g, b, a);
             return true;
@@ -86,7 +93,7 @@ public class SceneModificationsParser
         if (splitData.Length != 2)
             return false;
 
-        return ParseVector2(splitData[0], out position) && float.TryParse(splitData[1], out radius);
+        return ParseVector2(splitData[0], out position) && float.TryParse(splitData[1], NumberStyles.Float, CultureInfo.InvariantCulture, out radius);
     }
 
     public bool ParseArgument(string argument, string fullData)
@@ -149,7 +156,7 @@ public class SceneModificationsParser
     {
         if (ParseVector2(data, out parsedScale))
             return true;
-        else if (float.TryParse(data.Replace("(", "").Replace(")", ""), out float scale))
+        else if (float.TryParse(data.Replace("(", "").Replace(")", ""), NumberStyles.Float, CultureInfo.InvariantCulture, out float scale))
         {
             parsedScale.x = scale;
             parsedScale.y = scale;
@@ -169,7 +176,7 @@ public class SceneModificationsParser
         string[] splitData = data[1..(data.Length - 1)].Split(";");
         if (splitData.Length != 3)
             return false;
-        if (ParseVector2(splitData[0], out Vector2 minRange) && ParseVector2(splitData[1], out Vector2 maxRange) && float.TryParse(splitData[2], out float limit))
+        if (ParseVector2(splitData[0], out Vector2 minRange) && ParseVector2(splitData[1], out Vector2 maxRange) && float.TryParse(splitData[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float limit))
         {
             parsedFishParticleData = new SceneModifier.FishParticleData()
             {
@@ -186,12 +193,12 @@ public class SceneModificationsParser
 
     private bool ParseSurfaceWaterRegion(string data)
     {
-        return float.TryParse(data.Replace("(", "").Replace(")", ""), out parsedSurfaceWaterRegion);
+        return float.TryParse(data.Replace("(", "").Replace(")", ""), NumberStyles.Float, CultureInfo.InvariantCulture, out parsedSurfaceWaterRegion);
     }
 
     private bool ParseOffsetY(string data)
     {
-        return float.TryParse(data.Replace("(", "").Replace(")", ""), out parsedOffsetY);
+        return float.TryParse(data.Replace("(", "").Replace(")", ""), NumberStyles.Float, CultureInfo.InvariantCulture, out parsedOffsetY);
     }
 
     public Vector3 GetParsedRotation()
