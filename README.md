@@ -4,8 +4,6 @@ Pharloom's Glory modifies game assets in specific areas to make them look and fe
 
 This mod does **not** add any new gameplay scenes, it only modifies existing ones, replacing textures and adding game assets by parsing text files with custom scene modifications. However, there aren't significant gameplay changes as room layouts stay the same, the changes are usually only visual.
 
-The audio system in this plugin was adapted from Ashiepaws's [Patchwork](https://github.com/Ashiepaws/silksong-patchwork) mod, please check it out.
-
 ## Main Features
 
 * Modified Blasted Steps into **Coral Steps**:
@@ -44,6 +42,12 @@ Hollow Knight Silksong/
       > Textures/
       > PharloomsGlory.dll
 ```
+
+## Credits
+
+The audio system in this plugin was adapted from Ashiepaws's [Patchwork](https://github.com/Ashiepaws/silksong-patchwork) mod, please check it out.
+
+All textures come from Team Cherry and are unused Silksong assets in the game files.
 
 ## Screenshots
 
