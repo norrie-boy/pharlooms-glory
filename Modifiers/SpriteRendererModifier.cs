@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -85,7 +86,7 @@ public class SpriteRendererModifier
                 }
                 string spriteName = data[0];
                 string[] coords = data[1].Split(",");
-                if (!float.TryParse(coords[0], out float x) || !float.TryParse(coords[1], out float y))
+                if (!float.TryParse(coords[0], NumberStyles.Any, CultureInfo.InvariantCulture, out float x) || !float.TryParse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture, out float y))
                 {
                     Plugin.LogError($"Invalid sprite offset @ line {line}");
                     continue;
@@ -117,7 +118,7 @@ public class SpriteRendererModifier
             }
             string spriteName = data[0];
             string[] coords = data[1].Split(",");
-            if (!float.TryParse(coords[0], out float x) || !float.TryParse(coords[1], out float y))
+            if (!float.TryParse(coords[0], NumberStyles.Any, CultureInfo.InvariantCulture, out float x) || !float.TryParse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture, out float y))
             {
                 Plugin.LogError($"Invalid sprite hud offset @ line {line}");
                 continue;

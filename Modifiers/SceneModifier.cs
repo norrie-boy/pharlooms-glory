@@ -4,6 +4,7 @@ using Silksong.AssetHelper.ManagedAssets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -439,13 +440,13 @@ public class SceneModifier
                         Plugin.LogError($"Failed to parse color for AmbientLightColor @ line {line}");
                     break;
                 case "ambientLightIntensity":
-                    if (float.TryParse(data, out float ambientLightIntensity))
+                    if (float.TryParse(data, NumberStyles.Any, CultureInfo.InvariantCulture, out float ambientLightIntensity))
                         parsedAmbientLightIntensity = ambientLightIntensity;
                     else
                         Plugin.LogError($"Failed to parse float value for AmbientLightIntensity @ line {line}");
                     break;
                 case "saturation":
-                    if (float.TryParse(data, out float saturation))
+                    if (float.TryParse(data, NumberStyles.Any, CultureInfo.InvariantCulture, out float saturation))
                         parsedSaturation = saturation;
                     else
                         Plugin.LogError($"Failed to parse float value for Saturation @ line {line}");
@@ -488,7 +489,7 @@ public class SceneModifier
             return false;
         SceneModificationsParser parser = new SceneModificationsParser();
         bool hasDepth = parser.ParseVector3(pointData[0], out Vector3 positionWithDepth);
-        if (!parser.ParseVector2(pointData[0], out Vector2 position) && !hasDepth || !float.TryParse(pointData[1], out float radius))
+        if (!parser.ParseVector2(pointData[0], out Vector2 position) && !hasDepth || !float.TryParse(pointData[1], NumberStyles.Any, CultureInfo.InvariantCulture, out float radius))
             return false;
 
         DeactivatePointWithSpriteData parsedData = new DeactivatePointWithSpriteData()
@@ -527,7 +528,7 @@ public class SceneModifier
             return false;
 
         string uniqueName = splitData[0];
-        if (!float.TryParse(splitData[1], out float delay))
+        if (!float.TryParse(splitData[1], NumberStyles.Any, CultureInfo.InvariantCulture, out float delay))
             return false;
 
         DeactivateDelayedObjectData parsedData = new DeactivateDelayedObjectData()
@@ -867,7 +868,7 @@ public class SceneModifier
         if (pointData.Length != 2)
             return false;
         SceneModificationsParser parser = new SceneModificationsParser();
-        if (!parser.ParseVector2(pointData[0], out Vector2 position) || !float.TryParse(pointData[1], out float radius) || !int.TryParse(splitData[1], out int mapZone))
+        if (!parser.ParseVector2(pointData[0], out Vector2 position) || !float.TryParse(pointData[1], NumberStyles.Any, CultureInfo.InvariantCulture, out float radius) || !int.TryParse(splitData[1], out int mapZone))
             return false;
 
         SpriteAlterPointData parsedData = new SpriteAlterPointData()
