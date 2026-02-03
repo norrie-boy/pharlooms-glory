@@ -29,10 +29,27 @@ Replace modern day **Verdania** with Lost Verdania and make it accessible in Act
 
 ## Manual Install
 
+### Without mod manager manager
 Create a new folder in `your-silksong-install-location/Hollow Knight Silksong/BepInEx/plugins/` and name it `PharloomsGlory`. Download the mod zip file from Thunderstore and place the contents of `PharloomsGlory.zip/plugins/` into the folder you created. You should end up with this structure:
 
 ```
 Hollow Knight Silksong/
+> BepInEx/
+  > plugins/
+    > PharloomsGlory/
+      > Audio/
+      > Scenes/
+      > Text/
+      > Textures/
+      > PharloomsGlory.dll
+```
+
+### With r2modman
+
+Open your profile folder by going to `Settings > All > Browse profile folder` in r2modman. Create a new folder in `folder-you-just-opened/BepInEx/plugins/` and name it `Norrie_Boy-Pharlooms_Glory`. Download the mod zip file from Thunderstore and place the contents of `PharloomsGlory.zip/plugins/` into the folder you created. You should end up with this structure:
+
+```
+your-profile-folder/
 > BepInEx/
   > plugins/
     > PharloomsGlory/

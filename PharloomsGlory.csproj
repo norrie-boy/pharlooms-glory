@@ -15,9 +15,12 @@
 	<ItemGroup>
 		<PackageReference Include="BepInEx.Analyzers" Version="1.0.8" PrivateAssets="all" />
 		<PackageReference Include="BepInEx.Core" Version="5.4.21" />
-		<PackageReference Include="Hamunii.BepInEx.AutoPlugin" Version="2.0.1" />
+		<PackageReference Include="Hamunii.BepInEx.AutoPlugin" Version="2.1.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="UnityEngine.Modules" Version="6000.0.50" IncludeAssets="compile" />
 		<PackageReference Include="Silksong.GameLibs" Version="*-*" />
-		<PackageReference Include="Silksong.AssetHelper" Version="1.0.0" />
+		<PackageReference Include="Silksong.AssetHelper" Version="1.1.1" />
 	</ItemGroup>
 </Project>

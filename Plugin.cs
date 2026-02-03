@@ -22,11 +22,15 @@ public class Plugin : BaseUnityPlugin
         SceneModifier.Init();
         PatcherManager.Init();
         AssetManager.Init();
+        ConfigurationManager.Init();
 
         SpriteRendererModifier.instance.LoadTextures();
         AudioModifier.instance.LoadAudioClips();
 
         AssetManager.instance.RequestAssets();
+
+        ConfigurationManager.instance.Bind(base.Config);
+        AudioModifier.instance.LoadOverridesFromConfig();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }

@@ -7,7 +7,7 @@ namespace PharloomsGlory;
 
 public class Constants
 {
-    public const string PLUGIN_GUID = "com.mars.pharloomsglory";
+    public const string PLUGIN_GUID = "com.norrieboy.pharloomsglory";
     public const string PLUGIN_NAME = "Pharloom's Glory";
     public const string PLUGIN_VERSION = "0.1.0";
 
@@ -48,4 +48,9 @@ public class Constants
     public static readonly string TEXT_MODIFICATIONS_PATH = Path.Combine(BASE_PLUGIN_PATH, "Text");
 
     public static readonly string AUDIO_PATH = Path.Combine(BASE_PLUGIN_PATH, "Audio");
+
+    public const string BLASTED_STEPS_MAIN_MUSIC_FILE_NAME = "H116 Coral Steps-42 MAIN ALT";
+    public const string BLASTED_STEPS_SUB_MUSIC_FILE_NAME = "H116 Coral Steps-42 SUB";
+    public const string SANDS_OF_KARAK_MAIN_MUSIC_FILE_NAME = "Coral Ruins Main";
+    public const string SANDS_OF_KARAK_SUB_MUSIC_FILE_NAME = "Coral Ruins Sub";
 }

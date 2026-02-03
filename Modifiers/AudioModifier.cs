@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PharloomsGlory.Managers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class AudioModifier
     }
 
     private readonly Dictionary<string, AudioClip> updatedClips = new Dictionary<string, AudioClip>();
+    private readonly Dictionary<string, string> overriddenFileNames = new Dictionary<string, string>();
 
     public void LoadAudioClips()
     {
@@ -61,6 +63,29 @@ public class AudioModifier
 
     public bool GetAudioClip(string clipName, out AudioClip clip)
     {
-        return updatedClips.TryGetValue(clipName, out clip);
+        return updatedClips.TryGetValue(overriddenFileNames.GetValueOrDefault(clipName, clipName), out clip);
+    }
+
+    public void LoadOverridesFromConfig()
+    {
+        string blastedStepsMusicOverride = ConfigurationManager.instance.BlastedStepsMusic switch
+        {
+            ConfigurationManager.AreaMusicTrack.VANILLA => string.Empty,
+            ConfigurationManager.AreaMusicTrack.CORAL_STEPS => Constants.BLASTED_STEPS_MAIN_MUSIC_FILE_NAME,
+            ConfigurationManager.AreaMusicTrack.RED_CORAL_GORGE => Constants.SANDS_OF_KARAK_MAIN_MUSIC_FILE_NAME,
+            _ => string.Empty
+        };
+        overriddenFileNames.Add(Constants.BLASTED_STEPS_MAIN_MUSIC_FILE_NAME, blastedStepsMusicOverride);
+        overriddenFileNames.Add(Constants.BLASTED_STEPS_SUB_MUSIC_FILE_NAME, blastedStepsMusicOverride);
+
+        string sandsOfKarakMusicOverride = ConfigurationManager.instance.SandsOfKarakMusic switch
+        {
+            ConfigurationManager.AreaMusicTrack.VANILLA => string.Empty,
+            ConfigurationManager.AreaMusicTrack.CORAL_STEPS => Constants.BLASTED_STEPS_MAIN_MUSIC_FILE_NAME,
+            ConfigurationManager.AreaMusicTrack.RED_CORAL_GORGE => Constants.SANDS_OF_KARAK_MAIN_MUSIC_FILE_NAME,
+            _ => string.Empty
+        };
+        overriddenFileNames.Add(Constants.SANDS_OF_KARAK_MAIN_MUSIC_FILE_NAME, sandsOfKarakMusicOverride);
+        overriddenFileNames.Add(Constants.SANDS_OF_KARAK_SUB_MUSIC_FILE_NAME, sandsOfKarakMusicOverride);
     }
 }
