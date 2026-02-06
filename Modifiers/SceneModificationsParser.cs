@@ -174,9 +174,12 @@ public class SceneModificationsParser
     {
         parsedFishParticleData = new SceneModifier.FishParticleData();
         string[] splitData = data[1..(data.Length - 1)].Split(";");
-        if (splitData.Length != 3)
+        if (splitData.Length != 4)
             return false;
-        if (ParseVector2(splitData[0], out Vector2 minRange) && ParseVector2(splitData[1], out Vector2 maxRange) && float.TryParse(splitData[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float limit))
+        if (ParseVector2(splitData[0], out Vector2 minRange)
+            && ParseVector2(splitData[1], out Vector2 maxRange)
+            && float.TryParse(splitData[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float limit)
+            && (splitData[3] == "bg" || splitData[3] == "fg"))
         {
             parsedFishParticleData = new SceneModifier.FishParticleData()
             {
@@ -184,7 +187,13 @@ public class SceneModificationsParser
                 minCurveMax = minRange.y,
                 maxCurveMax = maxRange.x,
                 maxCurveMin = maxRange.y,
-                limit = limit
+                limit = limit,
+                type = splitData[3] switch
+                {
+                    "bg" => SceneModifier.FishParticleType.BG,
+                    "fg" => SceneModifier.FishParticleType.FG,
+                    _ => SceneModifier.FishParticleType.BG
+                }
             };
             return true;
         }

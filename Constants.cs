@@ -9,7 +9,7 @@ public class Constants
 {
     public const string PLUGIN_GUID = "com.norrieboy.pharloomsglory";
     public const string PLUGIN_NAME = "Pharloom's Glory";
-    public const string PLUGIN_VERSION = "0.1.0";
+    public const string PLUGIN_VERSION = "0.1.3";
 
     private const string DLL_NAME = "PharloomsGlory.dll";
 

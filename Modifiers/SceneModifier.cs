@@ -87,6 +87,11 @@ public class SceneModifier
     }
     private readonly List<DeactivateDelayedObjectData> parsedDeactivateDelayedObjects = new List<DeactivateDelayedObjectData>();
 
+    public enum FishParticleType
+    {
+        BG,
+        FG
+    }
     public struct FishParticleData
     {
         public float minCurveMin;
@@ -94,6 +99,7 @@ public class SceneModifier
         public float maxCurveMin;
         public float maxCurveMax;
         public float limit;
+        public FishParticleType type;
     }
     public struct CloneObjectData
     {

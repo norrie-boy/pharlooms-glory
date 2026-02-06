@@ -68,24 +68,38 @@ public class AudioModifier
 
     public void LoadOverridesFromConfig()
     {
-        string blastedStepsMusicOverride = ConfigurationManager.instance.BlastedStepsMusic switch
+        string blastedStepsMainMusicOverride = ConfigurationManager.instance.BlastedStepsMusic switch
         {
             ConfigurationManager.AreaMusicTrack.VANILLA => string.Empty,
             ConfigurationManager.AreaMusicTrack.CORAL_STEPS => Constants.BLASTED_STEPS_MAIN_MUSIC_FILE_NAME,
             ConfigurationManager.AreaMusicTrack.RED_CORAL_GORGE => Constants.SANDS_OF_KARAK_MAIN_MUSIC_FILE_NAME,
             _ => string.Empty
         };
-        overriddenFileNames.Add(Constants.BLASTED_STEPS_MAIN_MUSIC_FILE_NAME, blastedStepsMusicOverride);
-        overriddenFileNames.Add(Constants.BLASTED_STEPS_SUB_MUSIC_FILE_NAME, blastedStepsMusicOverride);
+        overriddenFileNames.Add(Constants.BLASTED_STEPS_MAIN_MUSIC_FILE_NAME, blastedStepsMainMusicOverride);
+        string blastedStepsSubMusicOverride = ConfigurationManager.instance.BlastedStepsMusic switch
+        {
+            ConfigurationManager.AreaMusicTrack.VANILLA => string.Empty,
+            ConfigurationManager.AreaMusicTrack.CORAL_STEPS => Constants.BLASTED_STEPS_SUB_MUSIC_FILE_NAME,
+            ConfigurationManager.AreaMusicTrack.RED_CORAL_GORGE => Constants.SANDS_OF_KARAK_SUB_MUSIC_FILE_NAME,
+            _ => string.Empty
+        };
+        overriddenFileNames.Add(Constants.BLASTED_STEPS_SUB_MUSIC_FILE_NAME, blastedStepsSubMusicOverride);
 
-        string sandsOfKarakMusicOverride = ConfigurationManager.instance.SandsOfKarakMusic switch
+        string sandsOfKarakMainMusicOverride = ConfigurationManager.instance.SandsOfKarakMusic switch
         {
             ConfigurationManager.AreaMusicTrack.VANILLA => string.Empty,
             ConfigurationManager.AreaMusicTrack.CORAL_STEPS => Constants.BLASTED_STEPS_MAIN_MUSIC_FILE_NAME,
             ConfigurationManager.AreaMusicTrack.RED_CORAL_GORGE => Constants.SANDS_OF_KARAK_MAIN_MUSIC_FILE_NAME,
             _ => string.Empty
         };
-        overriddenFileNames.Add(Constants.SANDS_OF_KARAK_MAIN_MUSIC_FILE_NAME, sandsOfKarakMusicOverride);
-        overriddenFileNames.Add(Constants.SANDS_OF_KARAK_SUB_MUSIC_FILE_NAME, sandsOfKarakMusicOverride);
+        overriddenFileNames.Add(Constants.SANDS_OF_KARAK_MAIN_MUSIC_FILE_NAME, sandsOfKarakMainMusicOverride);
+        string sandsOfKarakSubMusicOverride = ConfigurationManager.instance.SandsOfKarakMusic switch
+        {
+            ConfigurationManager.AreaMusicTrack.VANILLA => string.Empty,
+            ConfigurationManager.AreaMusicTrack.CORAL_STEPS => Constants.BLASTED_STEPS_SUB_MUSIC_FILE_NAME,
+            ConfigurationManager.AreaMusicTrack.RED_CORAL_GORGE => Constants.SANDS_OF_KARAK_SUB_MUSIC_FILE_NAME,
+            _ => string.Empty
+        };
+        overriddenFileNames.Add(Constants.SANDS_OF_KARAK_SUB_MUSIC_FILE_NAME, sandsOfKarakSubMusicOverride);
     }
 }

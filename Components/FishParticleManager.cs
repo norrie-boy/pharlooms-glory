@@ -12,6 +12,9 @@ public class FishParticleManager : MonoBehaviour
 
     private float waitTime;
 
+    private const float FG_PARTICLE_Z_LIMIT = -10f;
+    private ParticleSystem.Particle[] particles;
+
     public void StartReloadLoop()
     {
         HandleFishParticle(current);
@@ -45,6 +48,8 @@ public class FishParticleManager : MonoBehaviour
         ParticleSystem ps = go.GetComponent<ParticleSystem>();
         if (ps == null)
             return;
+        ParticleSystem.MainModule main = ps.main;
+        main.cullingMode = ParticleSystemCullingMode.AlwaysSimulate;
         ParticleSystem.LimitVelocityOverLifetimeModule lvol = ps.limitVelocityOverLifetime;
         lvol.limitX = data.limit;
         ParticleSystem.ForceOverLifetimeModule fol = ps.forceOverLifetime;
@@ -85,5 +90,35 @@ public class FishParticleManager : MonoBehaviour
             maxCurve.AddKey(1f, 0.7f);
             fol.y = new ParticleSystem.MinMaxCurve(1, minCurve, maxCurve);
         }
+    }
+
+    private void Update()
+    {
+        if (data.type == SceneModifier.FishParticleType.FG)
+        {
+            foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+            {
+                SetupParticlesArray(ps.main.maxParticles);
+                int particleCount = ps.GetParticles(particles);
+                Vector3[] particleLocalPositions = new Vector3[particleCount];
+                for (int i = 0; i < particleCount; i++)
+                    particleLocalPositions[i] = particles[i].position;
+                Vector3[] particleGlobalPositions = new Vector3[particleCount];
+                ps.transform.TransformPoints(particleLocalPositions, particleGlobalPositions);
+                for (int i = 0; i < particleCount; i++)
+                {
+                    Vector3 position = particleGlobalPositions[i];
+                    if (position.z > FG_PARTICLE_Z_LIMIT)
+                        particles[i].position = ps.transform.InverseTransformPoint(position.x, position.y, FG_PARTICLE_Z_LIMIT);
+                }
+                ps.SetParticles(particles, particleCount);
+            }
+        }
+    }
+
+    private void SetupParticlesArray(int maxParticles)
+    {
+        if (particles == null || particles.Length < maxParticles)
+            particles = new ParticleSystem.Particle[maxParticles];
     }
 }
