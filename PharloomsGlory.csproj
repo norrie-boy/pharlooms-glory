@@ -3,7 +3,7 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Nullable>enable</Nullable>
 		<AssemblyName>PharloomsGlory</AssemblyName>
-		<Version>0.1.3</Version>
+		<Version>0.1.4</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
 		<RootNamespace>PharloomsGlory</RootNamespace>

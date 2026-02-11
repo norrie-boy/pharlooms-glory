@@ -965,7 +965,7 @@ public class SceneModifier
             Vector3 position = go.transform.position;
             foreach (DeactivatePointWithSpriteData data in parsedDeactivatedPointsWithSprite)
             {
-                if (Util.GetSpriteName(sr.sprite) == data.spriteName && Vector2.Distance(go.transform.position, data.position) <= data.radius)
+                if (Util.GetSpriteNameWithTextureNameOnly(sr.sprite) == data.spriteName && Vector2.Distance(go.transform.position, data.position) <= data.radius)
                 {
                     if (data.depth.HasValue && position.z < data.depth)
                         continue;

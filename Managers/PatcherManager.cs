@@ -218,7 +218,10 @@ public class PatcherManager
     [HarmonyPatch("Awake")]
     class SaveSlotBackground_Awake_Patch
     {
-        static void Postfix(SaveSlotBackgrounds __instance, SaveSlotBackgrounds.AreaBackground[] ___areaBackgrounds, SaveSlotBackgrounds.AreaBackground[] ___extraAreaBackgrounds)
+        private static readonly Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+        private static bool loadedTextures = false;
+
+        static void LoadAreaArtTextures()
         {
             if (!Directory.Exists(Constants.TEXTURES_PATH))
             {
@@ -231,7 +234,6 @@ public class PatcherManager
                 Plugin.LogError("Failed to find area art textures directory");
                 return;
             }
-            Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
             foreach (string dir in Directory.GetDirectories(areaArtTexturesPath))
             {
                 foreach (string file in Directory.GetFiles(dir))
@@ -244,20 +246,41 @@ public class PatcherManager
                             Plugin.LogError($"Failed to load sprite texture {file}");
                             continue;
                         }
-                        textures.TryAdd(Path.GetFileNameWithoutExtension(file), t);
+                        textures.TryAdd(Util.GetSpriteNameWithTextureNameOnly(Path.GetFileNameWithoutExtension(file)), t);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        Plugin.LogError($"Exception while loading updated sprite textures: {e.Message}");
+                        try
+                        {
+                            string windowsFile = $"\\\\?\\{file}";
+                            Texture2D t = new Texture2D(2, 2);
+                            if (!t.LoadImage(File.ReadAllBytes(windowsFile)))
+                            {
+                                Plugin.LogError($"Failed to load sprite texture {windowsFile}");
+                                continue;
+                            }
+                            textures.TryAdd(Util.GetSpriteNameWithTextureNameOnly(Path.GetFileNameWithoutExtension(windowsFile)), t);
+                        }
+                        catch (Exception e)
+                        {
+                            Plugin.LogError($"Exception while loading sprite textures: {e.Message}");
+                        }
                     }
                 }
             }
+            loadedTextures = true;
+        }
+
+        static void Postfix(SaveSlotBackgrounds __instance, SaveSlotBackgrounds.AreaBackground[] ___areaBackgrounds, SaveSlotBackgrounds.AreaBackground[] ___extraAreaBackgrounds)
+        {
+            if (!loadedTextures)
+                LoadAreaArtTextures();
 
             foreach (SaveSlotBackgrounds.AreaBackground bg in ___areaBackgrounds.Concat(___extraAreaBackgrounds))
             {
                 if (bg?.BackgroundImage?.texture == null)
                     continue;
-                string spriteName = Util.GetSpriteName(bg.BackgroundImage);
+                string spriteName = Util.GetSpriteNameWithTextureNameOnly(bg.BackgroundImage);
                 if (!textures.ContainsKey(spriteName))
                     continue;
                 Texture2D t = textures[spriteName];

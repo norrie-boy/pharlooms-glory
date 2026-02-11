@@ -83,9 +83,23 @@ public class TK2DSpriteModifier
                     }
                     return true;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Plugin.LogError($"Exception while loading updated sprite textures: {e.Message}");
+                    try
+                    {
+                        texture = new Texture2D(2, 2);
+                        string windowsFile = $"\\\\?\\{file}";
+                        if (!texture.LoadImage(File.ReadAllBytes(windowsFile)))
+                        {
+                            Plugin.LogError($"Failed to load sprite texture {windowsFile}");
+                            continue;
+                        }
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        Plugin.LogError($"Exception while loading updated sprite textures: {e.Message}");
+                    }
                     return false;
                 }
             }

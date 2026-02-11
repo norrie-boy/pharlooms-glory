@@ -137,22 +137,34 @@ public class SpriteRendererModifier
             {
                 try
                 {
-                    Texture2D t = new Texture2D(2, 2);
-                    if (!t.LoadImage(File.ReadAllBytes(file)))
-                    {
-                        Plugin.LogError($"Failed to load HUD texture {file}");
-                        continue;
-                    }
-                    if (!hudSpriteTextures.TryAdd(Path.GetFileNameWithoutExtension(file), t))
-                        Plugin.LogError($"Failed to load HUD texture {file} as it was already loaded");
+                    AddHUDTexture(file);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Plugin.LogError($"Exception while loading HUD texture: {e.Message}");
+                    try
+                    {
+                        AddHUDTexture($"\\\\?\\{file}");
+                    }
+                    catch (Exception e)
+                    {
+                        Plugin.LogError($"Exception while loading HUD texture: {e.Message}");
+                    }
                 }
             }
         }
         Plugin.LogInfo("Loaded HUD textures");
+    }
+
+    private void AddHUDTexture(string file)
+    {
+        Texture2D t = new Texture2D(2, 2);
+        if (!t.LoadImage(File.ReadAllBytes(file)))
+        {
+            Plugin.LogError($"Failed to load HUD texture {file}");
+            return;
+        }
+        if (!hudSpriteTextures.TryAdd(Util.GetSpriteNameWithTextureNameOnly(Path.GetFileNameWithoutExtension(file)), t))
+            Plugin.LogError($"Failed to load HUD texture {file} as it was already loaded");
     }
 
     private void LoadAreaTextures(string dir, GlobalEnums.MapZone mapZone)
@@ -163,24 +175,36 @@ public class SpriteRendererModifier
             {
                 try
                 {
-                    Texture2D t = new Texture2D(2, 2);
-                    if (!t.LoadImage(File.ReadAllBytes(file)))
-                    {
-                        Plugin.LogError($"Failed to load sprite texture {file}");
-                        continue;
-                    }
-                    if (!spriteTextures.ContainsKey(mapZone))
-                        spriteTextures.Add(mapZone, new Dictionary<string, Texture2D>());
-                    if (!spriteTextures[mapZone].TryAdd(Path.GetFileNameWithoutExtension(file), t))
-                        Plugin.LogError($"Failed to load sprite texture {file} as it was already loaded");
+                    AddAreaTexture(file, mapZone);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Plugin.LogError($"Exception while loading sprite texture: {e.Message}");
+                    try
+                    {
+                        AddAreaTexture($"\\\\?\\{file}", mapZone);
+                    }
+                    catch (Exception e)
+                    {
+                        Plugin.LogError($"Exception while loading sprite texture: {e.Message}");
+                    }
                 }
             }
         }
         Plugin.LogInfo($"Loaded sprite textures for {mapZone}");
+    }
+
+    private void AddAreaTexture(string file, GlobalEnums.MapZone mapZone)
+    {
+        Texture2D t = new Texture2D(2, 2);
+        if (!t.LoadImage(File.ReadAllBytes(file)))
+        {
+            Plugin.LogError($"Failed to load sprite texture {file}");
+            return;
+        }
+        if (!spriteTextures.ContainsKey(mapZone))
+            spriteTextures.Add(mapZone, new Dictionary<string, Texture2D>());
+        if (!spriteTextures[mapZone].TryAdd(Util.GetSpriteNameWithTextureNameOnly(Path.GetFileNameWithoutExtension(file)), t))
+            Plugin.LogError($"Failed to load sprite texture {file} as it was already loaded");
     }
 
     private GlobalEnums.MapZone StringToMapZone(string s)
@@ -263,7 +287,7 @@ public class SpriteRendererModifier
         GlobalEnums.MapZone selectedMapZone = mapZone ?? overrideMapZone ?? currentMapZone;
         if (!spriteTextures.ContainsKey(selectedMapZone))
             return;
-        string spriteName = overrideSpriteName ?? Util.GetSpriteName(sr.sprite);
+        string spriteName = overrideSpriteName ?? Util.GetSpriteNameWithTextureNameOnly(sr.sprite);
         if (!GetSprite(spriteTextures[selectedMapZone],
             updatedSprites.GetValueOrDefault(selectedMapZone, new Dictionary<string, Sprite> { }),
             pivotOffsets.GetValueOrDefault(selectedMapZone, new Dictionary<string, Vector2> { }),
@@ -316,7 +340,7 @@ public class SpriteRendererModifier
 
     private void ModifyHUDSpriteRenderer(SpriteRenderer sr)
     {
-        string spriteName = Util.GetSpriteName(sr.sprite);
+        string spriteName = Util.GetSpriteNameWithTextureNameOnly(sr.sprite);
         if (!GetSprite(hudSpriteTextures, updatedHudSprites, hudPivotOffsets, sr.sprite, spriteName, out Sprite s))
             return;
         if (!updatedHudSprites.ContainsKey(spriteName))
@@ -332,7 +356,7 @@ public class SpriteRendererModifier
     {
         foreach (ShopItem item in Resources.FindObjectsOfTypeAll<ShopItem>())
         {
-            if (!GetSprite(hudSpriteTextures, updatedHudSprites, hudPivotOffsets, item.ItemSprite, Util.GetSpriteName(item.ItemSprite), out Sprite s))
+            if (!GetSprite(hudSpriteTextures, updatedHudSprites, hudPivotOffsets, item.ItemSprite, Util.GetSpriteNameWithTextureNameOnly(item.ItemSprite), out Sprite s))
                 continue;
             FieldInfo itemSpriteFieldInfo = typeof(ShopItem).GetField("itemSprite", BindingFlags.NonPublic | BindingFlags.Instance);
             if (itemSpriteFieldInfo == null)

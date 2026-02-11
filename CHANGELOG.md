@@ -1,3 +1,7 @@
+## v0.1.4
+- Removed `\\\?\` prefix from paths, adding it only if an error is detected.
+- Updated naming convention for sprites, removing IDs from texture names.
+
 ## v0.1.3
 - Fixed fish particles only rendering when fully inside camera view.
 - Fixed sub music tracks not playing.

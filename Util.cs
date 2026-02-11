@@ -91,4 +91,70 @@ public class Util
         currentDictionarySceneName = string.Empty;
         gameObjectsDictionary.Clear();
     }
+
+    private static readonly string[] VALID_TEXTURE_SHEETS =
+    [
+        // OTHER
+        "Core_Glows",
+        "Coral_BG",     // JUDGE_STEPS but has to be before 'Coral'
+        // AREA_ART
+        "Area_Art",
+        // CORAL_CAVERNS
+        "CoralBG",
+        "CoralCornerBlack",
+        "CoralCornerBlue",
+        "CoralRiverBlack",
+        "CoralRiverBlue",
+        "CW_sand_rest",
+        "CW_sand_down",
+        "CW_sand_fg",
+        "Acid_top",
+        "Coral Tower",
+        "Sand",
+        "Bellshrine",
+        "Stone",
+        "Coral",
+        "HBone",
+        "Core",
+        // HUD
+        "Inventory",
+        "Hornet_Map",
+        // JUDGE_STEPS
+        "clam_village",
+        "summons_pin",
+        "Sign",
+        "Pinstress_Hut",
+        "Room_Pinstress_Interior",
+        "Bell",
+        "Grey",
+        "Jail",
+        "Song",
+        "umb_blue_doormat"
+    ];
+
+    public static string GetSpriteNameWithTextureNameOnly(string spriteName)
+    {
+        int spriteIndex = spriteName.IndexOf("sprite");
+        if (spriteIndex == -1)
+            return spriteName;
+        string fullTexture = spriteName[..spriteIndex];
+        string textureName = string.Empty;
+        for (int i = 0; i < VALID_TEXTURE_SHEETS.Length; i++)
+        {
+            if (fullTexture.Contains(VALID_TEXTURE_SHEETS[i]))
+            {
+                textureName = VALID_TEXTURE_SHEETS[i];
+                break;
+            }
+        }
+        if (string.IsNullOrEmpty(textureName))
+            return spriteName;
+        string updatedName = $"{textureName}-{spriteName[spriteIndex..]}";
+        return updatedName;
+    }
+
+    public static string GetSpriteNameWithTextureNameOnly(Sprite sprite)
+    {
+        return GetSpriteNameWithTextureNameOnly(GetSpriteName(sprite));
+    }
 }

@@ -9,7 +9,7 @@ public class Constants
 {
     public const string PLUGIN_GUID = "com.norrieboy.pharloomsglory";
     public const string PLUGIN_NAME = "Pharloom's Glory";
-    public const string PLUGIN_VERSION = "0.1.3";
+    public const string PLUGIN_VERSION = "0.1.4";
 
     private const string DLL_NAME = "PharloomsGlory.dll";
 
@@ -24,7 +24,7 @@ public class Constants
             {
                 if (Directory.GetFiles(dir).Any(file => Path.GetFileName(file) == DLL_NAME))
                 {
-                    basePluginPath = $"\\\\?\\{Path.Combine(Paths.PluginPath, Path.GetFileName(dir))}";
+                    basePluginPath = Path.Combine(Paths.PluginPath, Path.GetFileName(dir));
                     break;
                 }
             }
